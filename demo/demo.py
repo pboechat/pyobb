@@ -27,7 +27,7 @@ if __name__ == '__main__':
     glEnable(GL_DEPTH_TEST)
     glShadeModel(GL_SMOOTH)
 
-    obj = OBJ(filename='bunny.obj')
+    obj = OBJ(filename='killeroo.obj')
     obb = OBB()
     indices = []
     for face in obj.faces:
