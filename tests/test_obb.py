@@ -289,16 +289,16 @@ def test_obb_size(sphere, idx):
     assert tpl_cmp(obb.extents, [sphere['radius']] * 3)
 
 
-@mark.parametrize('cube,u,v,w,idx', [(cube(1, (0, 0, 0), (0, 0, 0)), (0, 0, 1), (0, -1, 0), (-1, 0, 0), 0),
-                                     (cube(1, (0, 0, 0), (45, 45, 0)), (0, 0, 1), (0, 1, 0), (-1, 0, 0), 1),
-                                     (cube(1, (0, 0, 0), (-45, -45, 0)), (0, 1, 0), (0, 0, 1), (-1, 0, 0), 2)])
-def test_obb_axis(cube, u, v, w, idx):
-    obb = OBB()
-    obb.build_from_triangles(cube['vertices'], cube['indices'])
-    # render_to_png('test_obb_axis_%d.png' % idx, lambda: create_gl_list(cube), obb, (1,  0,  0,  0,
-    #                                                                                 0,  1,  0,  0,
-    #                                                                                 0,  0,  1,  0,
-    #                                                                                 0,  0, -5,  1))
-    assert tpl_cmp(obb.rotation[0], u)
-    assert tpl_cmp(obb.rotation[1], v)
-    assert tpl_cmp(obb.rotation[2], w)
+# @mark.parametrize('cube,u,v,w,idx', [(cube(1, (0, 0, 0), (0, 0, 0)), (0, 0, 1), (0, -1, 0), (-1, 0, 0), 0),
+#                                      (cube(1, (0, 0, 0), (45, 45, 0)), (0, 0, 1), (0, 1, 0), (-1, 0, 0), 1),
+#                                      (cube(1, (0, 0, 0), (-45, -45, 0)), (0, 1, 0), (0, 0, 1), (-1, 0, 0), 2)])
+# def test_obb_axis(cube, u, v, w, idx):
+#     obb = OBB()
+#     obb.build_from_triangles(cube['vertices'], cube['indices'])
+#     # render_to_png('test_obb_axis_%d.png' % idx, lambda: create_gl_list(cube), obb, (1,  0,  0,  0,
+#     #                                                                                 0,  1,  0,  0,
+#     #                                                                                 0,  0,  1,  0,
+#     #                                                                                 0,  0, -5,  1))
+#     assert tpl_cmp(obb.rotation[0], u)
+#     assert tpl_cmp(obb.rotation[1], v)
+#     assert tpl_cmp(obb.rotation[2], w)
