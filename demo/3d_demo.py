@@ -1,4 +1,3 @@
-from os import chdir
 from sys import exit
 from pygame import *
 from pygame.constants import *
@@ -14,8 +13,8 @@ from pyobb.obb import OBB
 if __name__ == '__main__':
     init()
     viewport = (800, 600)
-    srf = display.set_mode(viewport, OPENGL | DOUBLEBUF)
-    display.set_caption('pyobb demo')
+    surface = display.set_mode(viewport, OPENGL | DOUBLEBUF)
+    display.set_caption('pyobb 3D demo')
 
     glEnable(GL_LIGHTING)
     glEnable(GL_LIGHT0)
