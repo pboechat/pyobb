@@ -5,7 +5,6 @@ from pygame.constants import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from objloader import OBJ
-chdir('..')
 from pyobb.obb import OBB
 
 
@@ -16,6 +15,7 @@ if __name__ == '__main__':
     init()
     viewport = (800, 600)
     srf = display.set_mode(viewport, OPENGL | DOUBLEBUF)
+    display.set_caption('pyobb demo')
 
     glEnable(GL_LIGHTING)
     glEnable(GL_LIGHT0)
@@ -27,7 +27,7 @@ if __name__ == '__main__':
     glEnable(GL_DEPTH_TEST)
     glShadeModel(GL_SMOOTH)
 
-    obj = OBJ(filename='demo/killeroo.obj')
+    obj = OBJ(filename='bunny.obj')
     obb = OBB()
     indices = []
     for face in obj.faces:
