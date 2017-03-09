@@ -6,7 +6,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from objloader import OBJ
 chdir('..')
-from pyobb.pyobb import OBB
+from pyobb.obb import OBB
 
 
 ########################################################################################################################

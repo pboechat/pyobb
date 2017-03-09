@@ -1,8 +1,6 @@
-from os import chdir
 from pytest import mark
 from math import pi, cos, sin, sqrt, radians
-chdir('..')
-from pyobb.pyobb import OBB
+from pyobb.obb import OBB
 
 
 EPSILON = 0.025
