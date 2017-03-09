@@ -36,7 +36,6 @@ For instance, you can create an OBB from the points of a lat/lon sphere
         phi_step = pi / (num_slices - 1.0)
         theta = 0.0
         vertices = []
-        normals = []
         for i in range(0, num_slices):
             cos_theta = cos(theta)
             sin_theta = sin(theta)
@@ -50,22 +49,12 @@ For instance, you can create an OBB from the points of a lat/lon sphere
                     x /= n
                     y /= n
                     z /= n
-                normals.append((x, y, z))
                 vertices.append((x * radius + center[0],
                                  y * radius + center[1],
                                  z * radius + center[2]))
                 phi += phi_step
             theta += theta_step
-        indices = []
-        for i in range(0, num_slices - 1):
-            for j in range(0, num_slices - 1):
-                base_idx = (i * num_slices + j)
-                indices.append(base_idx)
-                indices.append(base_idx + num_slices)
-                indices.append(base_idx + num_slices + 1)
-                indices.append(base_idx)
-                indices.append(base_idx + num_slices + 1)
-                indices.append(base_idx + 1)
+        return vertices
     
     obb = OBB()
     obb.build_from_points(sphere(1, (0, 0, 0)))
