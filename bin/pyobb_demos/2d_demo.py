@@ -1,19 +1,21 @@
 from sys import exit
-from pygame import *
-from pygame.constants import *
+
 from OpenGL.GL import *
 from OpenGL.GLU import *
+from pygame import *
+from pygame.constants import *
+
 from pyobb.obb import OBB
 
 
 ########################################################################################################################
 # copied from: http://www.pygame.org/wiki/OBJFileLoader
 ########################################################################################################################
-if __name__ == '__main__':
+def main():
     init()
     viewport = (800, 600)
-    surface = display.set_mode(viewport, OPENGL | DOUBLEBUF)
-    display.set_caption('pyobb 2D demo')
+    display.set_mode(viewport, OPENGL | DOUBLEBUF)
+    display.set_caption('pyobb 2D demos')
 
     clock = time.Clock()
 
@@ -27,7 +29,7 @@ if __name__ == '__main__':
 
     points = []
     render_gl_lists = False
-    while 1:
+    while True:
         clock.tick(30)
         for e in event.get():
             if e.type == QUIT:
@@ -45,8 +47,7 @@ if __name__ == '__main__':
                     glEnd()
                     glEndList()
 
-                    obb = OBB()
-                    obb.build_from_points([(point[0], point[1], 0) for point in points])
+                    obb = OBB.build_from_points([(point[0], point[1], 0) for point in points])
 
                     obb_gl_list = glGenLists(1)
                     glNewList(obb_gl_list, GL_COMPILE)
@@ -57,6 +58,7 @@ if __name__ == '__main__':
                         glVertex3fv((obb.rotation[0][0] * x + obb.rotation[0][1] * y + obb.rotation[0][2] * z,
                                      obb.rotation[1][0] * x + obb.rotation[1][1] * y + obb.rotation[1][2] * z,
                                      obb.rotation[2][0] * x + obb.rotation[2][1] * y + obb.rotation[2][2] * z))
+
                     input_vertex(*obb.max)
                     input_vertex(obb.max[0], obb.min[1], obb.max[2])
                     input_vertex(obb.max[0], obb.min[1], obb.max[2])
@@ -110,3 +112,7 @@ if __name__ == '__main__':
         glEnd()
 
         display.flip()
+
+
+if __name__ == '__main__':
+    main()

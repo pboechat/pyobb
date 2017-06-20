@@ -8,13 +8,32 @@ from numpy.linalg import eigh, norm
 class OBB:
     def __init__(self):
         self.rotation = None
-        self.position = None
-        self.extents = None
         self.min = None
         self.max = None
 
-    def build_from_covariance_matrix(self, covariance_matrix, points):
-        _, eigenvectors = eigh(covariance_matrix)
+    def _transform(self, point):
+        return array([point.dot(self.rotation[0]),
+                      point.dot(self.rotation[1]),
+                      point.dot(self.rotation[2])],
+                     dtype=float)
+
+    @property
+    def position(self):
+        return self._transform((self.min + self.max) / 2.0)
+
+    @property
+    def extents(self):
+        return self._transform((self.max - self.min) / 2.0)
+
+    @classmethod
+    def build_from_covariance_matrix(cls, covariance_matrix, points):
+        for point in points:
+            if len(point) != 3:
+                raise Exception('points have to have 3-elements')
+
+        obb = OBB()
+
+        _, eigen_vectors = eigh(covariance_matrix)
 
         def normalize(v):
             n = norm(v)
@@ -22,38 +41,40 @@ class OBB:
                 return v
             return v / n
 
-        r = normalize(eigenvectors[:, 0])
-        u = normalize(eigenvectors[:, 1])
-        f = normalize(eigenvectors[:, 2])
+        r = normalize(eigen_vectors[:, 0])
+        u = normalize(eigen_vectors[:, 1])
+        f = normalize(eigen_vectors[:, 2])
 
-        self.rotation = ndarray(shape=(3, 3), dtype=float)
-        self.rotation[0, 0] = r[0]
-        self.rotation[0, 1] = u[0]
-        self.rotation[0, 2] = f[0]
-        self.rotation[1, 0] = r[1]
-        self.rotation[1, 1] = u[1]
-        self.rotation[1, 2] = f[1]
-        self.rotation[2, 0] = r[2]
-        self.rotation[2, 1] = u[2]
-        self.rotation[2, 2] = f[2]
+        obb.rotation = ndarray(shape=(3, 3), dtype=float)
+        obb.rotation[0, 0] = r[0]
+        obb.rotation[0, 1] = u[0]
+        obb.rotation[0, 2] = f[0]
+        obb.rotation[1, 0] = r[1]
+        obb.rotation[1, 1] = u[1]
+        obb.rotation[1, 2] = f[1]
+        obb.rotation[2, 0] = r[2]
+        obb.rotation[2, 1] = u[2]
+        obb.rotation[2, 2] = f[2]
 
-        self.min = [1e10, 1e10, 1e10]
-        self.max = [-1e10, -1e10, -1e10]
+        obb.min = array([1e10, 1e10, 1e10])
+        obb.max = array([-1e10, -1e10, -1e10])
         for point in points:
             p = array(point)
             p_prime = [dot(r, p), dot(u, p), dot(f, p)]
-            self.min = array([min(self.min[0], p_prime[0]),
-                              min(self.min[1], p_prime[1]),
-                              min(self.min[2], p_prime[2])], dtype=float)
-            self.max = array([max(self.max[0], p_prime[0]),
-                              max(self.max[1], p_prime[1]),
-                              max(self.max[2], p_prime[2])], dtype=float)
+            obb.min = array([min(obb.min[0], p_prime[0]),
+                             min(obb.min[1], p_prime[1]),
+                             min(obb.min[2], p_prime[2])], dtype=float)
+            obb.max = array([max(obb.max[0], p_prime[0]),
+                             max(obb.max[1], p_prime[1]),
+                             max(obb.max[2], p_prime[2])], dtype=float)
+        return obb
 
-        center = (self.max + self.min) / 2.0
-        self.position = (dot(self.rotation[0], center), dot(self.rotation[1], center), dot(self.rotation[2], center))
-        self.extents = (self.max - self.min) / 2.0
+    @classmethod
+    def build_from_triangles(cls, points, triangles):
+        for point in points:
+            if len(point) != 3:
+                raise Exception('points have to have 3-elements')
 
-    def build_from_triangles(self, points, triangles):
         weighed_mean = array([0, 0, 0], dtype=float)
         area_sum = 0
         c00 = c01 = c02 = c11 = c12 = c22 = 0
@@ -97,9 +118,14 @@ class OBB:
         covariance_matrix[1, 2] = c12
         covariance_matrix[2, 2] = c22
 
-        self.build_from_covariance_matrix(covariance_matrix, points)
+        return OBB.build_from_covariance_matrix(covariance_matrix, points)
 
-    def build_from_points(self, points):
+    @classmethod
+    def build_from_points(cls, points):
+        for point in points:
+            if len(point) != 3:
+                raise Exception('points have to have 3-elements')
+
         mean = array([0, 0, 0], dtype=float)
         num_points = len(points)
         for i in range(0, len(points)):
@@ -127,4 +153,4 @@ class OBB:
         covariance_matrix[2, 1] = c12
         covariance_matrix[2, 2] = c22
 
-        self.build_from_covariance_matrix(covariance_matrix, points)
+        return OBB.build_from_covariance_matrix(covariance_matrix, points)

@@ -2,7 +2,6 @@ from pytest import mark
 from math import pi, cos, sin, sqrt, radians
 from pyobb.obb import OBB
 
-
 EPSILON = 0.025
 
 
@@ -185,9 +184,9 @@ def cube(size, T, R):
     s1 = sin(radians(R[0]))
     s2 = sin(radians(R[1]))
     s3 = sin(radians(R[2]))
-    model = [c2*c3,                 -c2*s3,                 s2,        T[0],
-             c1*s3 + c3*s1*s2,      c1*c3 - s1*s2*s3,       -c2*s1,    T[1],
-             s1*s3 - c1*c3*s2,      c3*s1 + c1*s2*s3,       c1*c2,     T[2]]
+    model = [c2 * c3, -c2 * s3, s2, T[0],
+             c1 * s3 + c3 * s1 * s2, c1 * c3 - s1 * s2 * s3, -c2 * s1, T[1],
+             s1 * s3 - c1 * c3 * s2, c3 * s1 + c1 * s2 * s3, c1 * c2, T[2]]
 
     def new_vertex(x, y, z):
         vertices.append((model[0] * x * size + model[1] * y * size + model[2] * z * size + model[3],
@@ -267,8 +266,7 @@ def cube(size, T, R):
                                  (sphere(1, (0, 0, 1), 30), 5),
                                  (sphere(1, (0, 0, -1), 30), 6)])
 def test_obb_center(sphere, idx):
-    obb = OBB()
-    obb.build_from_points(sphere['vertices'])
+    obb = OBB.build_from_points(sphere['vertices'])
     # render_to_png('test_obb_center_%d.png' % idx, lambda: create_gl_list(sphere), obb, (1,  0,  0,  0,
     #                                                                                     0,  1,  0,  0,
     #                                                                                     0,  0,  1,  0,
@@ -276,25 +274,22 @@ def test_obb_center(sphere, idx):
     assert tpl_cmp(obb.position, sphere['center'])
 
 
-@mark.parametrize('sphere,idx', [(sphere(1, (0, 0, 0), 30), 0),
-                                 (sphere(1, (1, 0, 0), 30), 1),
-                                 (sphere(1, (-1, 0, 0), 30), 2)])
-def test_obb_size(sphere, idx):
-    obb = OBB()
-    obb.build_from_points(sphere['vertices'])
+@mark.parametrize('sphere,idx,extents', [(sphere(1, (0, 0, 0), 30), 0, [1, -1, 1]),
+                                         (sphere(1, (1, 0, 0), 30), 1, [1, 1, -1]),
+                                         (sphere(1, (-1, 0, 0), 30), 2, [1, 1, -1])])
+def test_obb_size(sphere, idx, extents):
+    obb = OBB.build_from_points(sphere['vertices'])
     # render_to_png('test_obb_size_%d.png' % idx, lambda: create_gl_list(sphere), obb, (1,  0,  0,  0,
     #                                                                                   0,  1,  0,  0,
     #                                                                                   0,  0,  1,  0,
     #                                                                                   0,  0, -5,  1))
-    assert tpl_cmp(obb.extents, [sphere['radius']] * 3)
-
+    assert tpl_cmp(obb.extents, extents)
 
 # @mark.parametrize('cube,u,v,w,idx', [(cube(1, (0, 0, 0), (0, 0, 0)), (0, 0, 1), (0, -1, 0), (-1, 0, 0), 0),
 #                                      (cube(1, (0, 0, 0), (45, 45, 0)), (0, 0, 1), (0, 1, 0), (-1, 0, 0), 1),
 #                                      (cube(1, (0, 0, 0), (-45, -45, 0)), (0, 1, 0), (0, 0, 1), (-1, 0, 0), 2)])
 # def test_obb_axis(cube, u, v, w, idx):
-#     obb = OBB()
-#     obb.build_from_triangles(cube['vertices'], cube['indices'])
+#     obb = OBB.build_from_triangles(cube['vertices'], cube['indices'])
 #     # render_to_png('test_obb_axis_%d.png' % idx, lambda: create_gl_list(cube), obb, (1,  0,  0,  0,
 #     #                                                                                 0,  1,  0,  0,
 #     #                                                                                 0,  0,  1,  0,

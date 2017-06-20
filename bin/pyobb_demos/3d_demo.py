@@ -1,20 +1,26 @@
 from sys import exit
+from argparse import ArgumentParser
 from pygame import *
 from pygame.constants import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
-from objloader import OBJ
 from pyobb.obb import OBB
+
+from .objloader import OBJ
 
 
 ########################################################################################################################
 # copied from: http://www.pygame.org/wiki/OBJFileLoader
 ########################################################################################################################
-if __name__ == '__main__':
+def main():
+    parser = ArgumentParser()
+    parser.add_argument('--obj', type=str, required=True, help='OBJ filename')
+    args = parser.parse_args()
+
     init()
     viewport = (800, 600)
-    surface = display.set_mode(viewport, OPENGL | DOUBLEBUF)
-    display.set_caption('pyobb 3D demo')
+    display.set_mode(viewport, OPENGL | DOUBLEBUF)
+    display.set_caption('pyobb 3D demos')
 
     glEnable(GL_LIGHTING)
     glEnable(GL_LIGHT0)
@@ -26,14 +32,13 @@ if __name__ == '__main__':
     glEnable(GL_DEPTH_TEST)
     glShadeModel(GL_SMOOTH)
 
-    obj = OBJ(filename='killeroo.obj')
-    obb = OBB()
+    obj = OBJ(filename=args.obj)
     indices = []
     for face in obj.faces:
         indices.append(face[0][0] - 1)
         indices.append(face[0][1] - 1)
         indices.append(face[0][2] - 1)
-    obb.build_from_triangles(obj.vertices, indices)
+    obb = OBB.build_from_triangles(obj.vertices, indices)
 
     obb_gl_list = glGenLists(1)
     glNewList(obb_gl_list, GL_COMPILE)
@@ -95,7 +100,7 @@ if __name__ == '__main__':
     rotation = [0, 0]
     translation = [-obb.position[0], -obb.position[1], -(obb.position[2] + obb.extents[2] * 2)]
     rotate = move = False
-    while 1:
+    while True:
         clock.tick(30)
         for e in event.get():
             if e.type == QUIT:
@@ -138,3 +143,7 @@ if __name__ == '__main__':
         glCallList(obb_gl_list)
 
         display.flip()
+
+
+if __name__ == '__main__':
+    main()

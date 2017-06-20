@@ -1,0 +1,3 @@
+pyobb
+pygame
+PyOpenGL
