@@ -3,7 +3,7 @@ from numpy.linalg import eigh, norm
 
 
 ########################################################################################################################
-# adapted from: http://jamesgregson.blogspot.co.at/2011/03/latex-test.html
+# adapted from: http://jamesgregson.blogspot.com/2011/03/latex-test.html
 ########################################################################################################################
 class OBB:
     def __init__(self):
