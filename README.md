@@ -4,7 +4,7 @@
 
 > OBB implementation in Python (using numpy)
 
-This is basically a port of the code found on [James' Blog](http://jamesgregson.blogspot.co.at/2011/03/latex-test.html), which in turn is a C++ implementation (using CGAL) of the ideas found in Stefan Gottschalk's [PhD thesis](http://gamma.cs.unc.edu/users/gottschalk/main.pdf).
+This is basically a port of the code found on [James' Blog](http://jamesgregson.blogspot.com/2011/03/latex-test.html), which in turn is a C++ implementation (using CGAL) of the ideas found in Stefan Gottschalk's [PhD thesis](http://gamma.cs.unc.edu/users/gottschalk/main.pdf).
 The central idea of this OBB contruction is to compute a covariance matrix for a point set and then finding the eigenvectors of this covariance matrix.
 
 ----------
@@ -56,8 +56,7 @@ For instance, you can create an OBB from the points of a lat/lon sphere
             theta += theta_step
         return vertices
     
-    obb = OBB()
-    obb.build_from_points(sphere(1, (0, 0, 0)))
+    obb = OBB.build_from_points(sphere(1, (0, 0, 0)))
 
 Which gives you this OBB:
 
@@ -70,13 +69,12 @@ You can also create an OBB from the vertices and faces of OBJ models
     
     obj = OBJ(filename='bunny.obj')  # stanford bunny
     # obj = OBJ(filename='killeroo.obj')  # killeroo
-    obb = OBB()
     indices = []
     for face in obj.faces:
         indices.append(face[0][0] - 1)
         indices.append(face[0][1] - 1)
         indices.append(face[0][2] - 1)
-    obb.build_from_triangles(obj.vertices, indices)
+    obb = OBB.build_from_triangles(obj.vertices, indices)
 
 Which gives you something like this:
 
