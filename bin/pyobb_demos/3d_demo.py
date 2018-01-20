@@ -6,7 +6,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from pyobb.obb import OBB
 
-from .objloader import OBJ
+from objloader import OBJ
 
 
 ########################################################################################################################
@@ -20,7 +20,7 @@ def main():
     init()
     viewport = (800, 600)
     display.set_mode(viewport, OPENGL | DOUBLEBUF)
-    display.set_caption('pyobb 3D demos')
+    display.set_caption('pyobb 3D demo')
 
     glEnable(GL_LIGHTING)
     glEnable(GL_LIGHT0)
@@ -46,9 +46,7 @@ def main():
     glColor3fv((1, 0, 0))
 
     def input_vertex(x, y, z):
-        glVertex3fv((obb.rotation[0][0] * x + obb.rotation[0][1] * y + obb.rotation[0][2] * z,
-                     obb.rotation[1][0] * x + obb.rotation[1][1] * y + obb.rotation[1][2] * z,
-                     obb.rotation[2][0] * x + obb.rotation[2][1] * y + obb.rotation[2][2] * z))
+        glVertex3fv(obb.transform((x, y, z)))
 
     input_vertex(*obb.max)
     input_vertex(obb.max[0], obb.min[1], obb.max[2])
@@ -98,7 +96,7 @@ def main():
     glMatrixMode(GL_MODELVIEW)
 
     rotation = [0, 0]
-    translation = [-obb.position[0], -obb.position[1], -(obb.position[2] + obb.extents[2] * 2)]
+    translation = [-obb.centroid[0], -obb.centroid[1], -(obb.centroid[2] + obb.extents[2] * 2)]
     rotate = move = False
     while True:
         clock.tick(30)

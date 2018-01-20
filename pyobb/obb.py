@@ -11,19 +11,43 @@ class OBB:
         self.min = None
         self.max = None
 
-    def _transform(self, point):
-        return array([point.dot(self.rotation[0]),
-                      point.dot(self.rotation[1]),
-                      point.dot(self.rotation[2])],
+    def transform(self, point):
+        return array([dot(point, self.rotation[0]),
+                      dot(point, self.rotation[1]),
+                      dot(point, self.rotation[2])],
                      dtype=float)
 
     @property
-    def position(self):
-        return self._transform((self.min + self.max) / 2.0)
+    def centroid(self):
+        return self.transform((self.min + self.max) / 2.0)
 
     @property
     def extents(self):
-        return self._transform((self.max - self.min) / 2.0)
+        return self.transform((self.max - self.min) / 2.0)
+
+    @property
+    def points(self):
+        return [
+            # upper cap: ccw order in a right-hand system
+            # rightmost, topmost, farthest
+            self.transform((self.max[0], self.max[1], self.min[2])),
+            # leftmost, topmost, farthest
+            self.transform((self.min[0], self.max[1], self.min[2])),
+            # leftmost, topmost, closest
+            self.transform((self.min[0], self.max[1], self.max[2])),
+            # rightmost, topmost, closest
+            self.transform(self.max),
+            # lower cap: cw order in a right-hand system
+            # leftmost, bottommost, farthest
+            self.transform(self.min),
+            # rightmost, bottommost, farthest
+            self.transform((self.max[0], self.min[1], self.min[2])),
+            # rightmost, bottommost, closest
+            self.transform((self.max[0], self.min[1], self.max[2])),
+            # leftmost, bottommost, closest
+            self.transform((self.min[0], self.min[1], self.max[1])),
+
+        ]
 
     @classmethod
     def build_from_covariance_matrix(cls, covariance_matrix, points):
@@ -35,15 +59,15 @@ class OBB:
 
         _, eigen_vectors = eigh(covariance_matrix)
 
-        def normalize(v):
+        def try_to_normalize(v):
             n = norm(v)
             if n == 0:
                 return v
             return v / n
 
-        r = normalize(eigen_vectors[:, 0])
-        u = normalize(eigen_vectors[:, 1])
-        f = normalize(eigen_vectors[:, 2])
+        r = try_to_normalize(eigen_vectors[:, 0])
+        u = try_to_normalize(eigen_vectors[:, 1])
+        f = try_to_normalize(eigen_vectors[:, 2])
 
         obb.rotation = ndarray(shape=(3, 3), dtype=float)
         obb.rotation[0, 0] = r[0]

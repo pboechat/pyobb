@@ -15,7 +15,7 @@ def main():
     init()
     viewport = (800, 600)
     display.set_mode(viewport, OPENGL | DOUBLEBUF)
-    display.set_caption('pyobb 2D demos')
+    display.set_caption('pyobb 2D demo')
 
     clock = time.Clock()
 
@@ -55,34 +55,44 @@ def main():
                     glColor3fv((1, 0, 0))
 
                     def input_vertex(x, y, z):
-                        glVertex3fv((obb.rotation[0][0] * x + obb.rotation[0][1] * y + obb.rotation[0][2] * z,
-                                     obb.rotation[1][0] * x + obb.rotation[1][1] * y + obb.rotation[1][2] * z,
-                                     obb.rotation[2][0] * x + obb.rotation[2][1] * y + obb.rotation[2][2] * z))
+                        glVertex3fv(obb.transform((x, y, z)))
 
                     input_vertex(*obb.max)
                     input_vertex(obb.max[0], obb.min[1], obb.max[2])
+
                     input_vertex(obb.max[0], obb.min[1], obb.max[2])
                     input_vertex(obb.min[0], obb.min[1], obb.max[2])
+
                     input_vertex(obb.min[0], obb.min[1], obb.max[2])
                     input_vertex(obb.min[0], obb.max[1], obb.max[2])
+
                     input_vertex(obb.min[0], obb.max[1], obb.max[2])
                     input_vertex(*obb.max)
+
                     input_vertex(obb.max[0], obb.max[1], obb.max[2])
                     input_vertex(obb.max[0], obb.max[1], obb.min[2])
+
                     input_vertex(obb.max[0], obb.min[1], obb.max[2])
                     input_vertex(obb.max[0], obb.min[1], obb.min[2])
+
                     input_vertex(obb.min[0], obb.max[1], obb.max[2])
                     input_vertex(obb.min[0], obb.max[1], obb.min[2])
+
                     input_vertex(obb.min[0], obb.min[1], obb.max[2])
                     input_vertex(obb.min[0], obb.min[1], obb.min[2])
+
                     input_vertex(obb.max[0], obb.max[1], obb.min[2])
                     input_vertex(obb.max[0], obb.min[1], obb.min[2])
+
                     input_vertex(obb.max[0], obb.min[1], obb.min[2])
                     input_vertex(*obb.min)
+
                     input_vertex(*obb.min)
                     input_vertex(obb.min[0], obb.max[1], obb.min[2])
+
                     input_vertex(obb.min[0], obb.max[1], obb.min[2])
                     input_vertex(obb.max[0], obb.max[1], obb.min[2])
+
                     glEnd()
                     glEndList()
                     render_gl_lists = True

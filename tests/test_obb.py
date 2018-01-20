@@ -271,7 +271,7 @@ def test_obb_center(sphere, idx):
     #                                                                                     0,  1,  0,  0,
     #                                                                                     0,  0,  1,  0,
     #                                                                                     0,  0, -5,  1))
-    assert tpl_cmp(obb.position, sphere['center'])
+    assert tpl_cmp(obb.centroid, sphere['center'])
 
 
 @mark.parametrize('sphere,idx,extents', [(sphere(1, (0, 0, 0), 30), 0, [1, -1, 1]),
