@@ -16,9 +16,11 @@ def get_requirements():
 
 setup(name='pyobb',
       packages=['pyobb'],
-      version='0.0',
+      version='1.0',
       install_requires=get_requirements(),
       description='Python OBB Implementation',
       author='Pedro Boechat',
       author_email='pboechat@gmail.com',
-      url='https://github.com/pboechat/pyobb')
+      url='https://github.com/pboechat/pyobb',
+      download_url = 'https://github.com/pboechat/pyobb/archive/1.0.tar.gz',
+      keywords = ['obb', 'computational-geometry', 'oriented-bounding-box'])
