@@ -5,7 +5,7 @@
 > OBB implementation in Python (using numpy)
 
 This is basically a port of the code found on [James' Blog](http://jamesgregson.blogspot.com/2011/03/latex-test.html), which in turn is a C++ implementation (using CGAL) of the ideas found in Stefan Gottschalk's [PhD thesis](http://gamma.cs.unc.edu/users/gottschalk/main.pdf).
-The central idea of this OBB contruction is to compute a covariance matrix for a point set and then finding the eigenvectors of this covariance matrix.
+The central idea of this OBB contruction is to compute a covariance matrix for a point set and then find the eigenvectors of this covariance matrix.
 
 ----------
 
@@ -13,9 +13,10 @@ The central idea of this OBB contruction is to compute a covariance matrix for a
 
 The *pyobb* package contains a single class: *OBB*. An OBB has the following attributes:
 
-* *position*: the OBB center
-* *min*: a point beloning to the OBB with the smallest XYZ components
-* *max*: a point beloning to the OBB with the largest XYZ components
+* *centroid*: the OBB center
+* *min*: the OBB point with the smallest XYZ components
+* *max*: the OBB point with the largest XYZ components
+* *points*: the 8 points of the OBB
 * *extents*: the extents of the OBB in the XYZ-axis
 * *rotation*: the rotation matrix of the OBB
 
