@@ -1,6 +1,6 @@
 # pyobb
 
-[![Build Status](https://travis-ci.org/pboechat/pyobb.svg?branch=master)](https://travis-ci.org/pboechat/pyobb)
+[![Build Status](https://travis-ci.org/pboechat/pyobb.svg?branch=master)](https://travis-ci.org/pboechat/pyobb) [![PyPI version](https://badge.fury.io/py/pyobb.svg)](https://badge.fury.io/py/pyobb)
 
 > OBB implementation in Python (using numpy)
 
@@ -8,6 +8,13 @@ This is basically a port of the code found on [James' Blog](http://jamesgregson.
 The central idea of this OBB contruction is to compute a covariance matrix for a point set and then find the eigenvectors of this covariance matrix.
 
 ----------
+
+### Installation
+
+Simply run
+
+    pip install pyobb
+
 
 ### Usage
 
