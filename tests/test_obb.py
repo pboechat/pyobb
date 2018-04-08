@@ -274,9 +274,9 @@ def test_obb_center(sphere, idx):
     assert tpl_cmp(obb.centroid, sphere['center'])
 
 
-@mark.parametrize('sphere,idx,extents', [(sphere(1, (0, 0, 0), 30), 0, [1, -1, 1]),
-                                         (sphere(1, (1, 0, 0), 30), 1, [1, 1, -1]),
-                                         (sphere(1, (-1, 0, 0), 30), 2, [1, 1, -1])])
+@mark.parametrize('sphere,idx,extents', [(sphere(1, (0, 0, 0), 30), 0, [1, 1, 1]),
+                                         (sphere(1, (1, 0, 0), 30), 1, [1, 1, 1]),
+                                         (sphere(1, (-1, 0, 0), 30), 2, [1, 1, 1])])
 def test_obb_size(sphere, idx, extents):
     obb = OBB.build_from_points(sphere['vertices'])
     # render_to_png('test_obb_size_%d.png' % idx, lambda: create_gl_list(sphere), obb, (1,  0,  0,  0,
