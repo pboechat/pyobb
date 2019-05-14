@@ -21,10 +21,10 @@ Simply run
 The *pyobb* package contains a single class: *OBB*. An OBB has the following attributes:
 
 * *centroid*: the OBB center
-* *min*: the OBB point with the smallest XYZ components
-* *max*: the OBB point with the largest XYZ components
+* *min*: the OBB point with the smallest XYZ components in the local frame (i.e,, -[width/2, height/2, depth/2])
+* *max*: the OBB point with the largest XYZ components in the local frame (i.e., [width/2, height/2, depth/2])
 * *points*: the 8 points of the OBB
-* *extents*: the extents of the OBB in the XYZ-axis
+* *extents*: the extents of the OBB in the XYZ-axis (i.e., the scaled unit vectors of the global frame)
 * *rotation*: the rotation matrix of the OBB
 
 You have three different ways to build an OBB: using a covariance matrix, using a point set and using a triangle mesh. Those ways are respectively implemented by the methods:
