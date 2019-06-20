@@ -35,7 +35,7 @@ You have three different ways to build an OBB: using a covariance matrix, using 
 
 For instance, you can create an OBB from the points of a lat/lon sphere
 
-    from math import pi, cos, sin
+    from math import pi, cos, sin, sqrt
     from pyobb.obb import OBB
     
     # creates a lat/lon sphere with a given radius and centered at a given point
