@@ -68,7 +68,7 @@ For instance, you can create an OBB from the points of a lat/lon sphere
 
 Which gives you this OBB:
 
-![](http://www.pedroboechat.com/images/pyobb_0.png)
+![](http://pedroboechat.com/images/pyobb_0.png)
 
 You can also create an OBB from the vertices and faces of OBJ models
 
@@ -86,8 +86,8 @@ You can also create an OBB from the vertices and faces of OBJ models
 
 Which gives you something like this:
 
-![](http://www.pedroboechat.com/images/pyobb_1.png)
+![](http://pedroboechat.com/images/pyobb_1.png)
 
 or this:
 
-![](http://www.pedroboechat.com/images/pyobb_2.png)
+![](http://pedroboechat.com/images/pyobb_2.png)
